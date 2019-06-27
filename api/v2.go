@@ -105,7 +105,7 @@ func (apiv2 *APIv2) messages(w http.ResponseWriter, req *http.Request) {
 	start, limit := apiv2.getStartLimit(w, req)
 
 	var res messagesResult
-	var limit = 20
+	limit = 20
 	messages, err := apiv2.config.Storage.List(start, limit)
 	if err != nil {
 		panic(err)
