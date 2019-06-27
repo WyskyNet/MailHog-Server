@@ -77,13 +77,36 @@ type messagesResult struct {
 	Items []data.Message `json:"items"`
 }
 
+func (apiv2 *APIv2) getStartLimit(w http.ResponseWriter, req *http.Request) (start, limit int) {
+	start = 0
+	limit = 50
+
+	s := req.URL.Query().Get("start")
+	if n, e := strconv.ParseInt(s, 10, 64); e == nil && n > 0 {
+		start = int(n)
+	}
+
+	l := req.URL.Query().Get("limit")
+	if n, e := strconv.ParseInt(l, 10, 64); e == nil && n > 0 {
+		if n > 250 {
+			n = 250
+		}
+		limit = int(n)
+	}
+
+	return
+}
+
 func (apiv2 *APIv2) messages(w http.ResponseWriter, req *http.Request) {
 	log.Println("[APIv2] GET /api/v2/messages")
 
 	apiv2.defaultOptions(w, req)
-	
+
+//	start, limit := apiv2.getStartLimit(w, req)
+
 	var res messagesResult
-	messages, err := apiv2.config.Storage.List(0, 20)
+
+	messages, err := apiv2.config.Storage.List(0,20)
 	if err != nil {
 		panic(err)
 	}
