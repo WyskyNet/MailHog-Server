@@ -92,18 +92,15 @@ func (apiv2 *APIv2) messages(w http.ResponseWriter, req *http.Request) {
 	log.Println("[APIv2] GET /api/v2/messages")
 
 	apiv2.defaultOptions(w, req)
-
-	start := apiv2.getStartLimit(w, req)
-
+	
 	var res messagesResult
-	var limit = 20
-	messages, err := apiv2.config.Storage.List(start, limit)
+	messages, err := apiv2.config.Storage.List(0, 20)
 	if err != nil {
 		panic(err)
 	}
 
 	res.Count = len([]data.Message(*messages))
-	res.Start = start
+	res.Start = 0
 	res.Items = []data.Message(*messages)
 	res.Total = apiv2.config.Storage.Count()
 
