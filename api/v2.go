@@ -93,7 +93,7 @@ func (apiv2 *APIv2) getStartLimit(w http.ResponseWriter, req *http.Request) (sta
 		}
 		limit = int(n)
 	}
-
+        limit = 50
 	return
 }
 
