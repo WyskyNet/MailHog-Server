@@ -77,17 +77,6 @@ type messagesResult struct {
 	Items []data.Message `json:"items"`
 }
 
-func (apiv2 *APIv2) getStartLimit(w http.ResponseWriter, req *http.Request) (start) {
-	start = 0
-
-	s := req.URL.Query().Get("start")
-	if n, e := strconv.ParseInt(s, 10, 64); e == nil && n > 0 {
-		start = int(n)
-	}
-
-	return
-}
-
 func (apiv2 *APIv2) messages(w http.ResponseWriter, req *http.Request) {
 	log.Println("[APIv2] GET /api/v2/messages")
 
