@@ -149,11 +149,10 @@ func (maildir *Maildir) List(start, limit int) (*data.Messages, error) {
 		m := *msg.Parse("mailhog.example")
 		m.ID = data.MessageID(fileinfo.Name())
 		m.Created = fileinfo.ModTime()
-    	        if (len(messages) >= limit) {
-		    msgs := data.Messages(messages)
-		    return &msgs, nil
-		}	
 		messages = append(messages, m)
+		if (limit > 0 && len(messages) >= limit) {
+		    break
+		}	
 	}
 
 	log.Printf("Found %d messages", len(messages))
