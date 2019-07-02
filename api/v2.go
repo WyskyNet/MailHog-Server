@@ -111,7 +111,7 @@ func (apiv2 *APIv2) messages(w http.ResponseWriter, req *http.Request) {
 		panic(err)
 	}
 
-	data = []data.Message(*messages)
+	dataItems = []data.Message(*messages)
 	
 	res.Count = len([]data.Message(*messages))
 	res.Start = start
