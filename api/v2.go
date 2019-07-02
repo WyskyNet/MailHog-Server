@@ -110,10 +110,8 @@ func (apiv2 *APIv2) messages(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-
-	dataItems = []data.Message(*messages)
 	
-	res.Count = len([]data.Message(*messages))
+	res.Count = len([]data.Message(*messages[1:4]))
 	res.Start = start
 	res.Items = []data.Message(*messages)
 	res.Total = apiv2.config.Storage.Count()
