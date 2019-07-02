@@ -116,7 +116,7 @@ func (apiv2 *APIv2) messages(w http.ResponseWriter, req *http.Request) {
 		return data[i].Created.After(data[j].Created)
 	})
 	
-	res.Count = len([]data[start:limit])
+	res.Count = len(data[start:limit])
 	res.Start = start
 	res.Items = data[start:limit]
 	res.Total = apiv2.config.Storage.Count()
