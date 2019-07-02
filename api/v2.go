@@ -3,8 +3,8 @@ package api
 import (
 	"encoding/json"
 	"net/http"
-	"sort"
 	"strconv"
+	"sort"
 
 	"github.com/gorilla/pat"
 	"github.com/ian-kent/go-log/log"
@@ -102,23 +102,25 @@ func (apiv2 *APIv2) messages(w http.ResponseWriter, req *http.Request) {
 
 	apiv2.defaultOptions(w, req)
 
-//	start, limit := apiv2.getStartLimit(w, req)
+	start, limit := apiv2.getStartLimit(w, req)
 
 	var res messagesResult
 
-	messages, err := apiv2.config.Storage.List(0,20)
+	messages, err := apiv2.config.Storage.List(start, limit)
 	if err != nil {
 		panic(err)
 	}
 
 	res.Count = len([]data.Message(*messages))
-	res.Start = 0
+	res.Start = start
 	res.Items = []data.Message(*messages)
 	res.Total = apiv2.config.Storage.Count()
 
 	sort.Slice(res.Items, func(i, j int) bool{
 		return res.Items[i].Created.After(res.Items[j].Created)
 	})
+	
+	res.Items = res.Items[start, limit]
 
 	bytes, _ := json.Marshal(res)
 	w.Header().Add("Content-Type", "text/json")
