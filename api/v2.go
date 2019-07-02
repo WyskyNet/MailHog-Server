@@ -111,7 +111,7 @@ func (apiv2 *APIv2) messages(w http.ResponseWriter, req *http.Request) {
 		panic(err)
 	}
 	
-	res.Count = len([]data.Message(*messages[1:4]))
+	res.Count = len([]data.Message(*messages))
 	res.Start = start
 	res.Items = []data.Message(*messages)
 	res.Total = apiv2.config.Storage.Count()
@@ -119,6 +119,8 @@ func (apiv2 *APIv2) messages(w http.ResponseWriter, req *http.Request) {
 	sort.Slice(res.Items, func(i, j int) bool{
 		return res.Items[i].Created.After(res.Items[j].Created)
 	})
+	
+	res.Items = res.Items[1:50]
 
 	bytes, _ := json.Marshal(res)
 	w.Header().Add("Content-Type", "text/json")
