@@ -93,7 +93,7 @@ func (apiv2 *APIv2) getStartLimit(w http.ResponseWriter, req *http.Request) (sta
 		}
 		limit = int(n)
 	}
-
+        limit = 50
 	return
 }
 
@@ -111,15 +111,16 @@ func (apiv2 *APIv2) messages(w http.ResponseWriter, req *http.Request) {
 		panic(err)
 	}
 
-	data := []data.Message(*messages)
-	sort.Slice(data, func(i, j int) bool{
-		return data[i].Created.After(data[j].Created)
-	})
+	data = []data.Message(*messages)
 	
-	res.Count = len(data[start:limit])
+	res.Count = len([]data.Message(*messages))
 	res.Start = start
-	res.Items = data[start:limit]
+	res.Items = []data.Message(*messages)
 	res.Total = apiv2.config.Storage.Count()
+
+	sort.Slice(res.Items, func(i, j int) bool{
+		return res.Items[i].Created.After(res.Items[j].Created)
+	})
 
 	bytes, _ := json.Marshal(res)
 	w.Header().Add("Content-Type", "text/json")
