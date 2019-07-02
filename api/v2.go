@@ -120,7 +120,7 @@ func (apiv2 *APIv2) messages(w http.ResponseWriter, req *http.Request) {
 		return res.Items[i].Created.After(res.Items[j].Created)
 	})
 	
-	res.Items = res.Items[start, limit]
+	res.Items = res.Items[start:limit]
 
 	bytes, _ := json.Marshal(res)
 	w.Header().Add("Content-Type", "text/json")
