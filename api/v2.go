@@ -111,7 +111,7 @@ func (apiv2 *APIv2) messages(w http.ResponseWriter, req *http.Request) {
 		panic(err)
 	}
 
-	var [] data
+	var data []
 	data = []data.Message(*messages)
 	sort.Slice(data, func(i, j int) bool{
 		return data[i].Created.After(data[j].Created)
